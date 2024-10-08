@@ -1,11 +1,11 @@
-import Form from './Form'
+import Form from './Form';
 
 const MainCard = () => {
   return (
-    <div className="flex m-auto">
-      <Form/>
-    </div>    
-  )
-}
+    <div className='m-auto flex'>
+      <Form />
+    </div>
+  );
+};
 
-export default MainCard
+export default MainCard;

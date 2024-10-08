@@ -32,3 +32,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prettier files
+.prettierrc.json
+
+# prisma migrations
+prisma/migrations/
