@@ -1,40 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
+import { createShortUrl } from "../actions";
+
+const initialState = {
+  message: "",
+};
 
 const Form = () => {
-  const [originalUrl, setOriginalUrl] = useState("");
-  const [randomNumber, setRandomNumber] = useState(0);
-  const [captchaCorrect, setCaptchaCorrect] = useState<null|boolean>(null);
-
-  const handleChange = (e) => {
-    setOriginalUrl(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const val = parseInt((document.getElementById("captcha") as HTMLInputElement).value);
-    if (val !== randomNumber) {
-        setCaptchaCorrect(false);
-    }
-    else {
-        setCaptchaCorrect(true);
-    }
-    console.log(originalUrl, val);
-  };
-
-  const generateRandomNumber = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  // Generate a new random number when the component mounts
-  useEffect(() => {
-    setRandomNumber(generateRandomNumber(1000, 9999)); // Example: 4-digit number
-  }, []);
+  const [state, formAction] = useFormState(createShortUrl, initialState);
 
   return (
     <div className="flex mx-auto m-2 p-2">
-      <form className="max-w-sm mx-auto">
+      <form className="max-w-sm mx-auto" action={formAction}>
         <label
           htmlFor="original_url"
           className="block mb-2 text-sm font-medium"
@@ -42,31 +20,36 @@ const Form = () => {
           Your long URL
         </label>
         <input
-          type="url"
+          type="text"
           id="original_url"
+          name="original_url"
           aria-describedby="helper-text-explanation"
           className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 dark:border-gray-200 dark:text-darkBackground"
           placeholder="website.com/so-long"
-          onChange={handleChange}
+          required
         ></input>
 
-        <label htmlFor="captcha" className="block mt-4 mb-2 text-sm font-medium">
-          Enter the number you see
-        </label>
-        <div className="flex items-center">
-          <div className="mr-4 px-4 py-2 rounded-lg font-bold bg-zinc-200 dark:text-darkBackground">
-            {randomNumber}
-          </div>
-          <input
-            type="number"
-            id="captcha"
-            aria-describedby="helper-text-explanation"
-            className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 dark:border-gray-200 dark:text-darkBackground"
-          ></input>
-        </div>
+        <p className="text-red-500 font-semibold text-xs my-2">
+          {state?.url_error}
+        </p>
 
-        {captchaCorrect === false && <p className="text-red-500 font-semibold text-xs my-2">Incorrect captcha, please try again.</p>}
-        
+        <label htmlFor="password" className="block my-2 text-sm font-medium">
+          Enter password for viewing analytics
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          aria-describedby="helper-text-explanation"
+          className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 dark:border-gray-200 dark:text-darkBackground"
+          placeholder="very-secure-password"
+          // required
+        ></input>
+
+        <p className="text-red-500 font-semibold text-xs my-2">
+          {state?.password_error}
+        </p>
+
         <p
           id="helper-text-explanation"
           className="my-4 text-sm text-gray-500 dark:text-gray-400"
@@ -80,12 +63,17 @@ const Form = () => {
           </a>
           .
         </p>
-        {/* <button type="button" className="my-6 mx-auto w-full focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Shorten</button> */}
-        
+
+        <p className="text-red-500 font-semibold text-xs my-2">
+          {state?.server_error}
+        </p>
+        <p className="text-red-500 font-semibold text-xs my-2">
+          {state?.message}
+        </p>
+
         <button
-          type="button"
-          className="mx-auto w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        onClick={handleSubmit}
+          type="submit"
+          className="mx-auto w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
         >
           Pico-fy!
         </button>
