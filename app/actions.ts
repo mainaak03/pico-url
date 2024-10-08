@@ -17,6 +17,35 @@ const schema = z.object({
 });
 
 export const createShortUrl = async (_prevState: unknown, data: FormData) => {
+  console.log(data.get('cf-turnstile-response'));
+
+  const token = data.get('cf-turnstile-response');
+  const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+  try {
+    const result = await fetch(url, {
+      body: JSON.stringify({
+        secret: process.env.TURNSTILE_SECRET_KEY,
+        response: token,
+      }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json());
+    
+    if (!result.success) {
+      return {
+        server_error: "Invalid CAPTCHA",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      server_error: 'CAPTCHA Error',
+    };
+  }
+  
   const validatedData = schema.safeParse({
     original_url: data.get('original_url'),
     password: data.get('password'),

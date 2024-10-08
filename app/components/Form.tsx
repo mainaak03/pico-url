@@ -71,6 +71,8 @@ const Form = () => {
           {state?.message}
         </p>
 
+        <div className='cf-turnstile flex justify-center items-center my-4' data-sitekey={process.env.TURNSTILE_SITE_KEY}></div>
+
         <button
           type='submit'
           className='mx-auto me-2 w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl'
