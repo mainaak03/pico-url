@@ -2,6 +2,8 @@
 
 import { useFormState } from 'react-dom';
 import { createShortUrl } from '../actions';
+import content_copy from '../icons/content_copy.svg';
+import Image from 'next/image';
 
 const initialState = {
   message: '',
@@ -9,6 +11,10 @@ const initialState = {
 
 const Form = () => {
   const [state, formAction] = useFormState(createShortUrl, initialState);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(state.message||"");
+  };
 
   return (
     <div className='m-2 mx-auto flex p-2'>
@@ -24,7 +30,7 @@ const Form = () => {
           id='original_url'
           name='original_url'
           aria-describedby='helper-text-explanation'
-          className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:border-gray-200 dark:text-darkBackground'
+          className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:border-gray-900 dark:text-darkBackground'
           placeholder='website.com/so-long'
           required
         ></input>
@@ -41,9 +47,9 @@ const Form = () => {
           id='password'
           name='password'
           aria-describedby='helper-text-explanation'
-          className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:border-gray-200 dark:text-darkBackground'
+          className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:border-gray-900 dark:text-darkBackground'
           placeholder='very-secure-password'
-          // required
+          required
         ></input>
 
         <p className='my-2 text-xs font-semibold text-red-500'>
@@ -67,18 +73,32 @@ const Form = () => {
         <p className='my-2 text-xs font-semibold text-red-500'>
           {state?.server_error}
         </p>
-        <p className='my-2 text-xs font-semibold text-red-500'>
-          {state?.message}
-        </p>
+        
+        {
+          state.message
+          &&
+          <button
+            type='button'
+            // className='flex justify-between mx-auto me-2 w-full rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl hover:underline'
+            className='flex justify-between mx-auto me-2 w-full rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl hover:underline'
+            disabled
+          >
+            <p id='short-url' className=''>{state.message||"TEST"}</p>
+            <Image className='hover:cursor-pointer' onClick={handleCopy} height={20} src={content_copy} alt='copy-icon' />
+          </button>
+        }
 
-        <div className='cf-turnstile flex justify-center items-center my-4' data-sitekey={process.env.TURNSTILE_SITE_KEY}></div>
-
-        <button
-          type='submit'
-          className='mx-auto me-2 w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl'
-        >
-          Pico-fy!
-        </button>
+        {
+          !state.message
+          &&
+          <button
+            type='submit'
+            // className='mx-auto me-2 w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl'
+            className='mx-auto me-2 w-full rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl'
+          >
+            Pico-fy!
+          </button>
+        }
       </form>
     </div>
   );

@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { encodeBase62 } from './utils/b62_helper';
+import bcrypt from 'bcrypt';
 
 const REG = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/;
 
@@ -17,34 +18,6 @@ const schema = z.object({
 });
 
 export const createShortUrl = async (_prevState: unknown, data: FormData) => {
-  console.log(data.get('cf-turnstile-response'));
-
-  const token = data.get('cf-turnstile-response');
-  const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-
-  try {
-    const result = await fetch(url, {
-      body: JSON.stringify({
-        secret: process.env.TURNSTILE_SECRET_KEY,
-        response: token,
-      }),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json());
-    
-    if (!result.success) {
-      return {
-        server_error: "Invalid CAPTCHA",
-      };
-    }
-  } catch (error) {
-    console.log(error);
-    return {
-      server_error: 'CAPTCHA Error',
-    };
-  }
   
   const validatedData = schema.safeParse({
     original_url: data.get('original_url'),
@@ -61,6 +34,8 @@ export const createShortUrl = async (_prevState: unknown, data: FormData) => {
   }
 
   try {
+    const password = validatedData.data.password;
+    validatedData.data.password = await bcrypt.hash(password, 10);
     const savedData = await prisma.url.create({
       data: validatedData.data,
     });

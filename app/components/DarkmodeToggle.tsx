@@ -6,7 +6,7 @@ import dark_mode from '../icons/dark_mode.svg';
 import light_mode from '../icons/light_mode.svg';
 
 const DarkmodeToggle = () => {
-  const [darkTheme, setDarkTheme] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(true);
 
   useEffect(() => {
     const theme = localStorage.getItem('theme');
