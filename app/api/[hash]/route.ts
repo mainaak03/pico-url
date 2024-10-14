@@ -11,7 +11,7 @@ export async function GET(
   const { hash } = params;
 
   const decoded_id = decodeBase62(hash);
-  const data = await prisma.url.findFirst({
+  const data = await prisma.url.findUnique({
     where: {
       id: decoded_id,
     },
@@ -24,7 +24,22 @@ export async function GET(
     );
   }
 
-  const decoded_url = data?.original_url;
+  const decoded_url = data.original_url;
+  
+  await prisma.urlAnalytics.upsert({
+    where: {
+      url_id: decoded_id, // This should match the unique key in your model
+    },
+    create: {
+      url_id: decoded_id,
+      total_visits: 1,
+    },
+    update: {
+      total_visits: {
+        increment: 1,
+      },
+    },
+  });
 
   return NextResponse.redirect(decoded_url);
 }
