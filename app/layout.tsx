@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Montserrat } from 'next/font/google';
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${montserrat.variable} antialiased`}>{children}</body>
+      <body className={`${montserrat.variable} antialiased`}>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
