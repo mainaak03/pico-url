@@ -11,6 +11,7 @@ import {
   getKeyValue,
 } from '@nextui-org/table';
 import { decodeBase62 } from '../utils/b62_helper';
+import { Spinner } from '@nextui-org/react';
 
 interface analytics {
   url_id: string;
@@ -21,6 +22,7 @@ interface analytics {
 
 const AnalyticsTable = () => {
   const [data, setData] = useState<analytics[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -29,7 +31,7 @@ const AnalyticsTable = () => {
         const urls: string[] = JSON.parse(data);
         const decoded_ids = urls.map((url) => {
           const fmt_url = new URL(url);
-          const hash = fmt_url.pathname.substring(3);
+          const hash = fmt_url.pathname.substring(fmt_url.pathname.lastIndexOf('/') + 1);          console.log(hash);
           return decodeBase62(hash);
         });
         const query = decoded_ids
@@ -39,6 +41,7 @@ const AnalyticsTable = () => {
         const analyticsData = await response.json();
         setData(analyticsData);
       }
+      setLoading(false);
     };
     fetchAnalytics();
   }, []);
@@ -66,6 +69,10 @@ const AnalyticsTable = () => {
           </TableHeader>
           <TableBody
             items={data}
+            isLoading={loading}
+            loadingContent={
+              <Spinner color='default' />
+            }
             emptyContent={'Nothing here yet. Pico-fy a link now!'}
           >
             {(item) => (
