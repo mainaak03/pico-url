@@ -18,7 +18,6 @@ const schema = z.object({
 });
 
 export const createShortUrl = async (_prevState: unknown, data: FormData) => {
-  
   const validatedData = schema.safeParse({
     original_url: data.get('original_url'),
     password: data.get('password'),
@@ -42,7 +41,7 @@ export const createShortUrl = async (_prevState: unknown, data: FormData) => {
 
     const encodedId = encodeBase62(savedData.id);
     const shortUrl = process.env.DOMAIN_URL + encodedId;
-    
+
     try {
       const updatedData = await prisma.url.update({
         where: {
@@ -50,16 +49,16 @@ export const createShortUrl = async (_prevState: unknown, data: FormData) => {
         },
         data: {
           encoded_url: shortUrl,
-        }
-      })
+        },
+      });
       return {
         message: updatedData.encoded_url,
-      }
+      };
     } catch (error) {
       console.log(error);
       return {
         server_error: 'DB error',
-      }
+      };
     }
   } catch (error) {
     console.log(error);

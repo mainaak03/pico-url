@@ -25,7 +25,7 @@ export async function GET(
   }
 
   const decoded_url = data.original_url;
-  
+
   await prisma.url.update({
     where: {
       id: decoded_id,
