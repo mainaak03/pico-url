@@ -26,15 +26,11 @@ export async function GET(
 
   const decoded_url = data.original_url;
   
-  await prisma.urlAnalytics.upsert({
+  await prisma.url.update({
     where: {
-      url_id: decoded_id, // This should match the unique key in your model
+      id: decoded_id,
     },
-    create: {
-      url_id: decoded_id,
-      total_visits: 1,
-    },
-    update: {
+    data: {
       total_visits: {
         increment: 1,
       },

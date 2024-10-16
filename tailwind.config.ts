@@ -11,13 +11,6 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-
-        darkBackground: 'var(--dark-background)',
-        darkForeground: 'var(--dark-foreground)',
-      },
       fontFamily: {
         sans: ['var(--font-montserrat)'],
       },

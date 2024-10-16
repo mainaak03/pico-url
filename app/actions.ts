@@ -39,10 +39,28 @@ export const createShortUrl = async (_prevState: unknown, data: FormData) => {
     const savedData = await prisma.url.create({
       data: validatedData.data,
     });
-    const shortUrl: string = encodeBase62(savedData.id);
-    return {
-      message: process.env.DOMAIN_URL + shortUrl,
-    };
+
+    const encodedId = encodeBase62(savedData.id);
+    const shortUrl = process.env.DOMAIN_URL + encodedId;
+    
+    try {
+      const updatedData = await prisma.url.update({
+        where: {
+          id: savedData.id,
+        },
+        data: {
+          encoded_url: shortUrl,
+        }
+      })
+      return {
+        message: updatedData.encoded_url,
+      }
+    } catch (error) {
+      console.log(error);
+      return {
+        server_error: 'DB error',
+      }
+    }
   } catch (error) {
     console.log(error);
     return {

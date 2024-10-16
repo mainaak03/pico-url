@@ -2,7 +2,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import prisma from '@/lib/prisma';
-import { encodeBase62 } from "@/app/utils/b62_helper";
 
 export async function GET(req: NextRequest) {
     try {
@@ -10,9 +9,10 @@ export async function GET(req: NextRequest) {
         const idStrings = searchParams.getAll("ids");
 
         const decoded_ids = idStrings.map(id => BigInt(id));
-        const analytics = await prisma.urlAnalytics.findMany({
+
+        const analytics = await prisma.url.findMany({
             where: {
-                url_id: {
+                id: {
                     in: decoded_ids,
                 }
             }
@@ -20,9 +20,10 @@ export async function GET(req: NextRequest) {
 
         const serializableAnalytics = analytics.map((item, index) => ({
             key: index,
-            ...item,
+            encoded_url: item.encoded_url,
+            created_at: item.created_at.toUTCString(),
+            total_visits: item.total_visits,
             last_accessed: item.last_accessed.toUTCString(),
-            url_id: process.env.DOMAIN_URL + encodeBase62(item.url_id),
         }));
         
         return NextResponse.json(serializableAnalytics);

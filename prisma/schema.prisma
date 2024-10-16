@@ -17,11 +17,9 @@ model Url {
   id              BigInt    @id @default(autoincrement())
   password        String?
   created_at      DateTime  @default(now())
-  original_url    String      
-}
+  original_url    String    
+  encoded_url     String        
 
-model UrlAnalytics {
-  url_id          BigInt    @id @unique
   last_accessed   DateTime  @default(now()) @updatedAt
-  total_visits    Int       @default(0)
+  total_visits    Int       @default(0)  
 }

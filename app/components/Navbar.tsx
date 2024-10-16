@@ -3,10 +3,11 @@ import DarkmodeToggle from './DarkmodeToggle';
 import Image from 'next/image';
 import analytics from '../icons/analytics.svg';
 import Link from 'next/link';
+import { Divider } from '@nextui-org/react';
 
 const Navbar = () => {
   return (
-    <div className='flex flex-col justify-center items-center'>
+    <div className='flex flex-col justify-center items-center relative z-10'>
       <div className="flex flex-row px-2 items-center justify-between w-3/5">
         <Link href="/" className='text-3xl mx-8 p-2 font-bold'>pico.url</Link>
         <div className="flex">
@@ -18,7 +19,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-darkForeground to-transparent opacity-20"></div>
+      <Divider className="w-full h-[1px] bg-gradient-to-r from-transparent via-foreground to-transparent opacity-10" />
     </div>
   );
 };

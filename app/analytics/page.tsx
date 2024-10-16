@@ -4,10 +4,10 @@ import AnalyticsTable from '../components/AnalyticsTable'
 
 const Analytics = () => {
   return (
-    <div className='flex h-screen flex-col font-sans'>
-      <div className="absolute top-0 -z-10 h-screen w-screen bg-background dark:bg-darkBackground bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,140,246,0.3),rgba(255,255,255,0))]"></div>
-        <Navbar />
-        <AnalyticsTable />
+    <div className='relative flex w-screen overflow-hidden h-screen flex-col font-sans text-foreground bg-background'>
+      <div className="absolute bottom-3/4 left-1/2 transform -translate-x-1/2 rounded-full opacity-10 bg-secondary w-[3000px] h-[3000px] blur-3xl"></div>
+      <Navbar />
+      <AnalyticsTable />
     </div>
   )
 }
