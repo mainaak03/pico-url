@@ -21,10 +21,10 @@ const Form = () => {
     if (state.message) {
       const saved_urls = localStorage.getItem('pico');
       if (!saved_urls) {
-        localStorage.setItem('pico', JSON.stringify([state.message]));
+        localStorage.setItem('pico', JSON.stringify(["https://" + state.message]));
       } else {
         const urls: string[] = JSON.parse(saved_urls);
-        urls.push(state.message);
+        urls.push("https://" + state.message);
         localStorage.setItem('pico', JSON.stringify(urls));
       }
     }
