@@ -5,6 +5,8 @@ import { createShortUrl } from '../actions';
 import { useEffect, useState } from 'react';
 import { Button, Input, Tooltip } from '@nextui-org/react';
 import OpenLinkIcon from '../icons/OpenLinkIcon';
+import VisibleIcon from '../icons/Visible';
+import HiddenIcon from '../icons/Hidden';
 
 const initialState = {
   message: '',
@@ -12,7 +14,8 @@ const initialState = {
 
 const Form = () => {
   const [state, formAction] = useFormState(createShortUrl, initialState);
-  const [TooltipActive, setTooltipActive] = useState(false);
+  const [tooltipActive, setTooltipActive] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
     if (state.message) {
@@ -37,7 +40,7 @@ const Form = () => {
 
   const handleRedirect = () => {
     if (state.message) {
-      window.open(state.message, '_blank');
+      window.open("https://" + state.message, '_blank');
     }
   };
 
@@ -59,14 +62,16 @@ const Form = () => {
         <Input
           className='m-2'
           isRequired
-          type='password'
+          type={hidden?'password':'text'}
           label='Password for viewing analytics'
           // placeholder='secure-password'
-          isClearable
           errorMessage={state.password_error}
           isInvalid={state.password_error ? true : false}
           id='password'
           name='password'
+          endContent={
+            hidden?<VisibleIcon height={20} width={20} onClick={() =>setHidden(!hidden)} />:<HiddenIcon height={20} width={20} onClick={() =>setHidden(!hidden)} />
+          }
         />
 
         <p
@@ -99,7 +104,7 @@ const Form = () => {
             <div className='m-2 flex w-full items-center justify-between'>
               <Tooltip
                 showArrow
-                isOpen={TooltipActive}
+                isOpen={tooltipActive}
                 content='Copied to clipboard!'
                 className='text-foreground'
                 placement='left'

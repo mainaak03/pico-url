@@ -3,7 +3,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/r/:hash([a-zA-Z0-9-_]{3,8})',
+        source: '/r/:hash([a-zA-Z0-9-_]{1,8})',
         destination: '/api/r/:hash',
       },
     ];
