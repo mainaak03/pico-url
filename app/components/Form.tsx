@@ -7,6 +7,7 @@ import { Button, Input, Tooltip } from '@nextui-org/react';
 import OpenLinkIcon from '../icons/OpenLinkIcon';
 import VisibleIcon from '../icons/Visible';
 import HiddenIcon from '../icons/Hidden';
+import SubmitButton from './SubmitButton';
 
 const initialState = {
   message: '',
@@ -52,7 +53,6 @@ const Form = () => {
           isRequired
           type='url'
           label='Your long URL'
-          // placeholder='website.com/so-long'
           isClearable
           errorMessage={state.url_error}
           isInvalid={state.url_error ? true : false}
@@ -64,7 +64,6 @@ const Form = () => {
           isRequired
           type={hidden?'password':'text'}
           label='Password for viewing analytics'
-          // placeholder='secure-password'
           errorMessage={state.password_error}
           isInvalid={state.password_error ? true : false}
           id='password'
@@ -131,16 +130,9 @@ const Form = () => {
           </>
         )}
 
-        {!state.message && (
-          <Button
-            className='mx-2 w-full'
-            color='primary'
-            variant='flat'
-            type='submit'
-          >
-            Pico-fy!
-          </Button>
-        )}
+        {!state.message &&
+          <SubmitButton />
+        }
       </form>
     </div>
   );
