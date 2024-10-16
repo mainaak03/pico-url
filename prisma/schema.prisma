@@ -18,7 +18,7 @@ model Url {
   password        String?
   created_at      DateTime  @default(now())
   original_url    String    
-  encoded_url     String        
+  encoded_url     String    
 
   last_accessed   DateTime  @default(now()) @updatedAt
   total_visits    Int       @default(0)  
