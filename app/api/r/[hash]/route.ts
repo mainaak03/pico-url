@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ status: 400 });
   }
   const hash = req.nextUrl.pathname.substring(3);
+  console.log(path, hash);
 
   const decoded_id = decodeBase62(hash);
   console.log(decoded_id);
