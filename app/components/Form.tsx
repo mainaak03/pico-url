@@ -37,6 +37,9 @@ const Form = () => {
 
   const handleRedirect = () => {
     if (state.message) {
+      console.log("state:", state.message);
+      console.log("dom:", process.env.DOMAIN_URL);
+      
       const fullUrl = new URL(state.message, process.env.DOMAIN_URL).href;
       console.log(fullUrl);
       window.open(fullUrl, '_blank');

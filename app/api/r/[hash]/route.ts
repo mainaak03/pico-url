@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
   const hash = req.nextUrl.pathname.substring(3);
 
   const decoded_id = decodeBase62(hash);
+  console.log(decoded_id);
   const data = await prisma.url.findUnique({
     where: {
       id: decoded_id,
