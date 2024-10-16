@@ -40,7 +40,7 @@ const Form = () => {
 
   const handleRedirect = () => {
     if (state.message) {
-      window.open(state.message, '_blank');
+      window.open("https://" + state.message, '_blank');
     }
   };
 
