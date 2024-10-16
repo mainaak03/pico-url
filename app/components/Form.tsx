@@ -37,7 +37,9 @@ const Form = () => {
 
   const handleRedirect = () => {
     if (state.message) {
-      window.open(state.message, '_blank');
+      const fullUrl = new URL(state.message, process.env.DOMAIN_URL).href;
+      console.log(fullUrl);
+      window.open(fullUrl, '_blank');
     }
   };
 
