@@ -1,41 +1,37 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import dark_mode from '../icons/dark_mode.svg';
-import light_mode from '../icons/light_mode.svg';
+import SunIcon from '../icons/SunIcon';
+import MoonIcon from '../icons/MoonIcon';
+import { useTheme } from 'next-themes';
 
 const DarkmodeToggle = () => {
-  const [darkTheme, setDarkTheme] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'dark') {
-      setDarkTheme(true);
-    } else {
-      setDarkTheme(false);
-    }
+    setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (darkTheme) {
-      document.body.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [darkTheme]);
+  if (!mounted) return null;
 
   return (
     <>
-      <button onClick={() => setDarkTheme(!darkTheme)}>
-        {darkTheme ? (
-          <Image src={light_mode} height={24} width={24} alt='lightmode' />
-        ) : (
-          <Image src={dark_mode} height={24} width={24} alt='darkmode' />
-        )}
-      </button>
+      {theme === 'dark' ? (
+        <SunIcon
+          onClick={() => setTheme('light')}
+          width={20}
+          height={20}
+          className='text-foreground'
+        />
+      ) : (
+        <MoonIcon
+          onClick={() => setTheme('dark')}
+          width={20}
+          height={20}
+          className='text-foreground'
+        />
+      )}
     </>
   );
 };

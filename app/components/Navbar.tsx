@@ -1,9 +1,8 @@
 import React from 'react';
 import DarkmodeToggle from './DarkmodeToggle';
-import Image from 'next/image';
-import analytics from '../icons/analytics.svg';
 import Link from 'next/link';
 import { Divider } from '@nextui-org/react';
+import AnalyticsIcon from '../icons/AnalyticsIcon';
 
 const Navbar = () => {
   return (
@@ -15,9 +14,9 @@ const Navbar = () => {
         <div className='flex'>
           <Link
             href='/analytics'
-            className='mx-4 flex p-2 dark:text-foreground'
+            className='mx-4 flex items-center p-2 dark:text-foreground'
           >
-            <Image src={analytics} alt='analytics-icon' />
+            <AnalyticsIcon width={20} height={20} className='text-foreground' />
           </Link>
           <div className='mr-8 flex p-2'>
             <DarkmodeToggle />

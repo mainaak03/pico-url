@@ -2,10 +2,9 @@
 
 import { useFormState } from 'react-dom';
 import { createShortUrl } from '../actions';
-import open_in_new from '../icons/open_in_new.svg';
-import Image from 'next/image';
-import { useEffect } from 'react';
-import { Button, Input } from '@nextui-org/react';
+import { useEffect, useState } from 'react';
+import { Button, Input, Tooltip } from '@nextui-org/react';
+import OpenLinkIcon from '../icons/OpenLinkIcon';
 
 const initialState = {
   message: '',
@@ -13,6 +12,7 @@ const initialState = {
 
 const Form = () => {
   const [state, formAction] = useFormState(createShortUrl, initialState);
+  const [TooltipActive, setTooltipActive] = useState(false);
 
   useEffect(() => {
     if (state.message) {
@@ -29,6 +29,10 @@ const Form = () => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(state.message || '');
+    setTooltipActive(true);
+    setTimeout(() => {
+      setTooltipActive(false);
+    }, 2000);
   };
 
   const handleRedirect = () => {
@@ -76,7 +80,7 @@ const Form = () => {
           .
         </p>
 
-        <p className='m-2 text-xs font-semibold text-red-500'>
+        <p className='m-2 text-xs font-semibold text-danger'>
           {state?.server_error}
         </p>
 
@@ -89,25 +93,26 @@ const Form = () => {
               readOnly
               color='secondary'
               endContent={
-                <Image
-                  className='hover:cursor-pointer'
-                  height={20}
-                  width={20}
-                  src={open_in_new}
-                  alt='open-link-icon'
-                  onClick={handleRedirect}
-                />
+                <OpenLinkIcon height={20} width={20} onClick={handleRedirect} />
               }
             />
             <div className='m-2 flex w-full items-center justify-between'>
-              <Button
-                color='primary'
-                variant='flat'
-                onClick={handleCopy}
-                className='mr-1 w-1/2'
+              <Tooltip
+                showArrow
+                isOpen={TooltipActive}
+                content='Copied to clipboard!'
+                className='text-foreground'
+                placement='left'
               >
-                Copy link
-              </Button>
+                <Button
+                  color='primary'
+                  variant='flat'
+                  onClick={handleCopy}
+                  className='mr-1 w-1/2'
+                >
+                  Copy link
+                </Button>
+              </Tooltip>
               <Button
                 type='reset'
                 color='primary'

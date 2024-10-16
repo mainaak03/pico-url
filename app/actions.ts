@@ -39,8 +39,8 @@ export const createShortUrl = async (_prevState: unknown, data: FormData) => {
       data: {
         original_url: validatedData.data.original_url,
         password: validatedData.data.password,
-        encoded_url: "",
-      }
+        encoded_url: '',
+      },
     });
 
     const encodedId = encodeBase62(savedData.id);

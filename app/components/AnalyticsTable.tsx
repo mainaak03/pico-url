@@ -29,7 +29,7 @@ const AnalyticsTable = () => {
         const urls: string[] = JSON.parse(data);
         const decoded_ids = urls.map((url) => {
           const fmt_url = new URL(url);
-          const hash = fmt_url.pathname.substring(1);
+          const hash = fmt_url.pathname.substring(3);
           return decodeBase62(hash);
         });
         const query = decoded_ids
