@@ -3,16 +3,28 @@
   "short_name": "pico.url",
   "icons": [
     {
-      "src": "/web-app-manifest-192x192.png",
+      "src": "public/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "public/manifest-icon-192.maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/web-app-manifest-512x512.png",
+      "src": "public/manifest-icon-512.maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "public/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#ffffff",
@@ -29,5 +41,19 @@
     "lifestyle",
     "productivity",
     "utilities"
+  ],
+  "shortcuts": [
+    {
+      "name": "Home",
+      "short_name": "Home",
+      "description": "Open home page",
+      "url": "/"
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View URL analytics",
+      "url": "/analytics"
+    }
   ]
 }
