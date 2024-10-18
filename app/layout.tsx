@@ -46,6 +46,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
+      {/* <script>
+        if (typeof navigator.serviceWorker !== "undefined") {
+          navigator.serviceWorker.register('sw.js');
+        }
+      </script> */}
       <head>
         <link
           rel='icon'
@@ -60,7 +65,7 @@ export default function RootLayout({
           sizes='180x180'
           href='/apple-touch-icon.png'
         />
-        <link rel='manifest' href='/site.webmanifest' />
+        <link rel='manifest' href='/manifest.json' />
       </head>
       <body className={`${montserrat.variable} antialiased`}>
         <Providers>{children}</Providers>

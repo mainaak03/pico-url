@@ -1,0 +1,33 @@
+{
+  "name": "pico.url",
+  "short_name": "pico.url",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "id": "pico.url",
+  "description": "pico.url is a fast, secure, and privacy-focused URL shortening service that transforms long web links into simple, memorable, and shareable short URLs. Built as a Progressive Web App (PWA), pico.url offers seamless offline support, instant loading, and easy access from any device. Track visits, view analytics, and manage your shortened URLs effortlessly with a clean, user-friendly interface. Available anytime, anywhere—pico-fy your links today!",
+  "start_url": "/",
+  "dir": "ltr",
+  "scope": "/",
+  "lang": "en",
+  "orientation": "portrait",
+  "categories": [
+    "lifestyle",
+    "productivity",
+    "utilities"
+  ]
+}
