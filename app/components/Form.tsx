@@ -2,11 +2,9 @@
 
 import { useFormState } from 'react-dom';
 import { createShortUrl } from '../actions';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Input, Tooltip } from '@nextui-org/react';
 import OpenLinkIcon from '../icons/OpenLinkIcon';
-import VisibleIcon from '../icons/Visible';
-import HiddenIcon from '../icons/Hidden';
 import SubmitButton from './SubmitButton';
 
 const initialState = {
@@ -16,20 +14,6 @@ const initialState = {
 const Form = () => {
   const [state, formAction] = useFormState(createShortUrl, initialState);
   const [tooltipActive, setTooltipActive] = useState(false);
-  const [hidden, setHidden] = useState(true);
-
-  useEffect(() => {
-    if (state.message) {
-      const saved_urls = localStorage.getItem('pico');
-      if (!saved_urls) {
-        localStorage.setItem('pico', JSON.stringify(["https://" + state.message]));
-      } else {
-        const urls: string[] = JSON.parse(saved_urls);
-        urls.push("https://" + state.message);
-        localStorage.setItem('pico', JSON.stringify(urls));
-      }
-    }
-  }, [state.message]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(state.message || '');
@@ -61,23 +45,19 @@ const Form = () => {
         />
         <Input
           className='m-2'
-          isRequired
-          type={hidden?'password':'text'}
-          label='Password for viewing analytics'
-          errorMessage={state.password_error}
-          isInvalid={state.password_error ? true : false}
-          id='password'
-          name='password'
-          endContent={
-            hidden?<VisibleIcon height={20} width={20} onClick={() =>setHidden(!hidden)} />:<HiddenIcon height={20} width={20} onClick={() =>setHidden(!hidden)} />
-          }
+          type='text'
+          label='Short description'
+          errorMessage={state.description_error}
+          isInvalid={state.description_error ? true : false}
+          id='description'
+          name='description'
         />
 
         <p
           id='helper-text-explanation'
           className='m-2 w-full text-xs text-gray-400'
         >
-          We’ll never sell your analytics. Read our{' '}
+          We’ll never sell your data. Read our{' '}
           <a href='#' className='font-medium text-primary hover:underline'>
             Privacy Policy
           </a>

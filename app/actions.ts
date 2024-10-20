@@ -3,24 +3,31 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { encodeBase62 } from './utils/b62_helper';
-import bcrypt from 'bcrypt';
-
-const REG = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/;
+import { getSession } from '@auth0/nextjs-auth0';
 
 const schema = z.object({
   original_url: z.string().url({
     message: 'Invalid URL',
   }),
-  password: z.string().regex(REG, {
-    message:
-      'Password must be at least 8 characters long and include at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.',
+  description: z.string().min(0).max(50, {
+    message: 'Description can have at most 50 characters'
   }),
+  email: z.string().email().optional(),
 });
 
 export const createShortUrl = async (_prevState: unknown, data: FormData) => {
+  const session = await getSession();
+
+  let email: string|null = null;
+  
+  if (session && session.user) {
+    email = session.user.email;
+  }
+  
   const validatedData = schema.safeParse({
     original_url: data.get('original_url'),
-    password: data.get('password'),
+    description: data.get('description'),
+    email: email,
   });
 
   if (!validatedData.success) {
@@ -28,18 +35,17 @@ export const createShortUrl = async (_prevState: unknown, data: FormData) => {
     const errors = validatedData.error.flatten().fieldErrors;
     return {
       url_error: errors.original_url,
-      password_error: errors.password,
+      description_error: errors.description,
     };
   }
 
   try {
-    const password = validatedData.data.password;
-    validatedData.data.password = await bcrypt.hash(password, 10);
     const savedData = await prisma.url.create({
       data: {
         original_url: validatedData.data.original_url,
-        password: validatedData.data.password,
+        description: validatedData.data.description,
         encoded_url: '',
+        email: email,
       },
     });
 
