@@ -3,7 +3,8 @@ import './globals.css';
 import { Montserrat } from 'next/font/google';
 import { Providers } from './providers';
 import ServiceWorkerRegister from './components/ServiceWorkerRegister';
-import { Analytics } from '@vercel/analytics/react';
+// import { Analytics } from '@vercel/analytics/react';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export const metadata: Metadata = {
   title: 'pico.url | URL Shortener',
@@ -64,13 +65,15 @@ export default function RootLayout({
         />
         <link rel='manifest' href='/manifest.json' />
       </head>
-      <body className={`${montserrat.variable} antialiased`}>
-        <Providers>
-          {children}
-          <Analytics />
-        </Providers>
-        <ServiceWorkerRegister />
-      </body>
+      <UserProvider>
+        <body className={`${montserrat.variable} antialiased`}>
+          <Providers>
+            {children}
+          </Providers>
+          {/* <Analytics /> */}
+          <ServiceWorkerRegister />
+        </body>
+      </UserProvider>
     </html>
   );
 }

@@ -18,7 +18,7 @@ interface analytics {
   last_accessed: string;
   visits: number;
   key: number;
-}
+};
 
 const AnalyticsTable = () => {
   const [data, setData] = useState<analytics[]>([]);
