@@ -3,6 +3,7 @@ import './globals.css';
 import { Montserrat } from 'next/font/google';
 import { Providers } from './providers';
 import ServiceWorkerRegister from './components/ServiceWorkerRegister';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: 'pico.url | URL Shortener',
@@ -64,7 +65,10 @@ export default function RootLayout({
         <link rel='manifest' href='/manifest.json' />
       </head>
       <body className={`${montserrat.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Analytics />
+        </Providers>
         <ServiceWorkerRegister />
       </body>
     </html>
