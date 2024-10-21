@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -10,56 +10,62 @@ import {
   TableCell,
   getKeyValue,
 } from '@nextui-org/table';
-import { decodeBase62 } from '../utils/b62_helper';
 import { Spinner } from '@nextui-org/react';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import useSWR from 'swr';
 
 interface analytics {
+  key: number;
   url_id: string;
+  original_url: string;
+  description: string;
+  created_at: string;
   last_accessed: string;
   visits: number;
-  key: number;
+}
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  const res_json = await response.json();
+  const data: analytics[] = res_json.serializableAnalytics;
+  return data;
 }
 
 const AnalyticsTable = () => {
-  const [data, setData] = useState<analytics[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAnalytics = async () => {
-      const data = localStorage.getItem('pico');
-      if (data) {
-        const urls: string[] = JSON.parse(data);
-        const decoded_ids = urls.map((url) => {
-          const fmt_url = new URL(url);
-          const hash = fmt_url.pathname.substring(fmt_url.pathname.lastIndexOf('/') + 1);          console.log(hash);
-          return decodeBase62(hash);
-        });
-        const query = decoded_ids
-          .map((id) => `ids=${encodeURIComponent(id.toString())}`)
-          .join('&');
-        const response = await fetch(`/api/analytics?${query}`);
-        const analyticsData = await response.json();
-        setData(analyticsData);
-      }
-      setLoading(false);
-    };
-    fetchAnalytics();
-  }, []);
+  const { data, error, isLoading } = useSWR('/api/analytics', fetcher);
 
   const columns = [
     { key: 'encoded_url', label: 'Pico-url' },
+    { key: 'original_url', label: 'Original URL'},
+    { key: 'description', label: 'Description' },
     { key: 'total_visits', label: 'Total Visits' },
     { key: 'last_accessed', label: 'Last Visit' },
     { key: 'created_at', label: 'Created at' },
   ];
 
+  if (isLoading) {
+    return (
+      <div className='w-full z-10 m-auto px-6 max-w-[1024px]'>
+        <Spinner color='default' />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className='relative z-10 mx-auto my-auto px-6 max-w-[1024px] text-danger'>
+        {error}
+      </div>
+    )
+  }
+
   return (
-    <div className='relative z-10 mx-auto my-8 w-3/5 px-2'>
-      <div className='mx-8 my-4 flex p-2 text-3xl font-light'>
+    <div className='relative h-full mb-auto z-10 mx-auto px-6 max-w-[1024px]'>
+      <div className='flex text-2xl lg:text-3xl mt-4 lg:mt-10 font-light'>
         Analytics for your pico-urls:
       </div>
-      <div className='mx-8 flex p-2'>
-        <Table align='center' removeWrapper={true} aria-label='Analytics table'>
+      <div className='my-4'>
+        <Table align='center' aria-label='Analytics table'>
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn className='text-md' key={column.key}>
@@ -69,10 +75,6 @@ const AnalyticsTable = () => {
           </TableHeader>
           <TableBody
             items={data}
-            isLoading={loading}
-            loadingContent={
-              <Spinner color='default' />
-            }
             emptyContent={'Nothing here yet. Pico-fy a link now!'}
           >
             {(item) => (
@@ -89,4 +91,4 @@ const AnalyticsTable = () => {
   );
 };
 
-export default AnalyticsTable;
+export default withPageAuthRequired(AnalyticsTable);

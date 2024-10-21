@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Montserrat } from 'next/font/google';
 import { Providers } from './providers';
+import ServiceWorkerRegister from './components/ServiceWorkerRegister';
+// import { Analytics } from '@vercel/analytics/react';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export const metadata: Metadata = {
   title: 'pico.url | URL Shortener',
@@ -60,11 +63,17 @@ export default function RootLayout({
           sizes='180x180'
           href='/apple-touch-icon.png'
         />
-        <link rel='manifest' href='/site.webmanifest' />
+        <link rel='manifest' href='/manifest.json' />
       </head>
-      <body className={`${montserrat.variable} antialiased`}>
-        <Providers>{children}</Providers>
-      </body>
+      <UserProvider>
+        <body className={`${montserrat.variable} antialiased`}>
+          <Providers>
+            {children}
+          </Providers>
+          {/* <Analytics /> */}
+          <ServiceWorkerRegister />
+        </body>
+      </UserProvider>
     </html>
   );
 }
