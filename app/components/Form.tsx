@@ -30,10 +30,10 @@ const Form = () => {
   };
 
   return (
-    <div className='m-2 mx-auto flex p-2'>
-      <form className='mx-auto' action={formAction}>
+    <div className='mx-auto flex'>
+      <form className='w-full' action={formAction}>
         <Input
-          className='m-2'
+          className='my-2'
           isRequired
           type='url'
           label='Your long URL'
@@ -44,7 +44,7 @@ const Form = () => {
           name='original_url'
         />
         <Input
-          className='m-2'
+          className='my-2'
           type='text'
           label='Short description'
           errorMessage={state.description_error}
@@ -55,7 +55,7 @@ const Form = () => {
 
         <p
           id='helper-text-explanation'
-          className='m-2 w-full text-xs text-gray-400'
+          className='my-2 w-full text-xs text-gray-400'
         >
           We’ll never sell your data. Read our{' '}
           <a href='#' className='font-medium text-primary hover:underline'>
@@ -64,7 +64,7 @@ const Form = () => {
           .
         </p>
 
-        <p className='m-2 text-xs font-semibold text-danger'>
+        <p className='my-2 text-xs font-semibold text-danger'>
           {state?.server_error}
         </p>
 
@@ -73,14 +73,14 @@ const Form = () => {
             <Input
               value={state.message || 'https://pico.url/test-url'}
               type='url'
-              className='m-2'
+              className='my-2'
               readOnly
               color='secondary'
               endContent={
                 <OpenLinkIcon height={20} width={20} onClick={handleRedirect} />
               }
             />
-            <div className='m-2 flex w-full items-center justify-between'>
+            <div className='my-2 flex w-full items-center justify-between'>
               <Tooltip
                 showArrow
                 isOpen={tooltipActive}

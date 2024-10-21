@@ -7,6 +7,7 @@ import {
   Avatar,
   DropdownMenu,
   DropdownItem,
+  Link,
 } from '@nextui-org/react';
 import React from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -31,14 +32,14 @@ const NavAuth = () => {
               <p>Signed in as</p>
               <p className='font-semibold'>{user.name}</p>
             </DropdownItem>
-            <DropdownItem key='logout' className='text-danger' color='danger'>
-              <a href='/api/auth/logout'>Logout</a>
+            <DropdownItem key='logout' as={Link} href='/api/auth/logout' className='text-danger' color='danger'>
+              Logout
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       ) : (
-        <Button isLoading={isLoading} color='primary' variant='flat'>
-          <a hidden={isLoading} href='/api/auth/login'>Login</a>
+        <Button as={Link} href='/api/auth/login' isLoading={isLoading} color='primary' variant='flat'>
+          {!isLoading && "Login"}
         </Button>
       )}
     </>

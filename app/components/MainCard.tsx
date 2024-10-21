@@ -3,11 +3,12 @@ import HeroCard from './HeroCard';
 
 const MainCard = () => {
   return (
-    <div className='relative z-10 flex w-3/5 items-center justify-center lg:m-auto'>
-      <div className='mx-8 h-full lg:w-1/2'>
+    <div className='z-10 flex m-auto flex-col mt-8 lg:flex-row px-6 max-w-[1024px] mx-auto lg:m-auto lg:items-center justify-center'>
+      <div className='md:w-1/2 h-full md:m-auto lg:m-auto lg:w-1/2'>
         <HeroCard />
       </div>
-      <div className='mx-8 h-full w-full lg:w-1/2'>
+      <span className='md:w-12 h-full lg:w-24 w-0'></span>
+      <div className='md:w-1/2 md:m-auto lg:m-auto lg:w-1/2'>
         <Form />
       </div>
     </div>

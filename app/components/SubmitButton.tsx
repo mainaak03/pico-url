@@ -8,7 +8,7 @@ const SubmitButton = () => {
     const { pending } = useFormStatus();
   return (
     <Button
-            className='mx-2 w-full'
+            className='w-full'
             color='primary'
             variant='flat'
             type='submit'

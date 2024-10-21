@@ -45,7 +45,7 @@ const AnalyticsTable = () => {
 
   if (isLoading) {
     return (
-      <div className='relative z-10 mx-auto my-auto px-6 max-w-[1024px]'>
+      <div className='w-full z-10 m-auto px-6 max-w-[1024px]'>
         <Spinner color='default' />
       </div>
     )
@@ -60,8 +60,8 @@ const AnalyticsTable = () => {
   }
 
   return (
-    <div className='relative z-10 mx-auto px-6 max-w-[1024px]'>
-      <div className='flex text-3xl mt-12 font-light'>
+    <div className='relative h-full mb-auto z-10 mx-auto px-6 max-w-[1024px]'>
+      <div className='flex text-2xl lg:text-3xl mt-4 lg:mt-10 font-light'>
         Analytics for your pico-urls:
       </div>
       <div className='my-4'>

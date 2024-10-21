@@ -12,7 +12,7 @@ const schema = z.object({
   description: z.string().min(0).max(50, {
     message: 'Description can have at most 50 characters'
   }),
-  email: z.string().email().optional(),
+  email: z.string().email().optional().nullable(),
 });
 
 export const createShortUrl = async (_prevState: unknown, data: FormData) => {
